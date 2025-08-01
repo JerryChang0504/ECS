@@ -1,11 +1,18 @@
 package com.giun.ecs.exception;
 
-public class ApplicationException extends RuntimeException {
+import com.giun.ecs.enums.ResultCode;
 
-	private static final long serialVersionUID = -5612351470382473938L;
+import lombok.Data;
 
-	public ApplicationException(String message) {
-		super(message);
+@Data
+public class ApplicationException extends Exception {
+
+	private String code;
+	private String msg;
+
+	public ApplicationException(ResultCode resultCode) {
+		super(resultCode.getMsg());
+		this.code = resultCode.getCode();
+		this.msg = resultCode.getMsg();
 	}
-
 }
