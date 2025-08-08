@@ -1,7 +1,6 @@
 package com.giun.ecs.config;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +13,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
 import com.giun.ecs.filter.JwtAuthenticationFilter;
 
 @Configuration
@@ -37,7 +35,7 @@ public class SecurityConfig {
                                                                            // 支援
 
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/api/login", "/api/register", "/api/user",
+            .requestMatchers("/**", "/api/login", "/api/register", "/api/user",
                 "/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html") // 白名單
             .permitAll() // 允許所有
             .anyRequest().permitAll())

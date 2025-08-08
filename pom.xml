@@ -33,6 +33,12 @@
 		<springdoc.version>2.3.0</springdoc.version>
 	</properties>
 	<dependencies>
+
+	  <dependency>
+	    <groupId>org.springframework.boot</groupId>
+	    <artifactId>spring-boot-starter-actuator</artifactId>
+	  </dependency>
+
 		<dependency>
 			<groupId>jakarta.validation</groupId>
 			<artifactId>jakarta.validation-api</artifactId>
