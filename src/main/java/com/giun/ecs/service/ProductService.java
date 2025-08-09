@@ -60,8 +60,7 @@ public class ProductService {
   }
 
   public Outbound getProductById(Integer id) {
-    Product product =
-        productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
+    Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
 
     ProductResponse response = ProductResponse.builder()
         .id(product.getId())
@@ -102,8 +101,7 @@ public class ProductService {
   }
 
   public Outbound updateProduct(Integer id, ProductUploadRequest req) {
-    Product product =
-        productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
+    Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
 
     byte[] imageBytes = null;
     String imageType = req.getImageType();
@@ -143,11 +141,8 @@ public class ProductService {
         .imageType(imageType)
         .build();
 
-
     productRepository.save(updateProduct);
 
     return Outbound.ok("Product updated successfully");
   }
 }
-
-
