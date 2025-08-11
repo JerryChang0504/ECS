@@ -87,7 +87,6 @@ public class ProductService {
         .imageType(imageInfo.imageType)
         .build();
 
-
     productRepository.save(updateProduct);
 
     return Outbound.ok("Product updated successfully");
