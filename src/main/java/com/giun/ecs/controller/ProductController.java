@@ -84,4 +84,16 @@ public class ProductController {
     return ResponseEntity.ok(resp);
   }
 
+/**
+ * 刪除商品
+ * 
+ * @param id
+   * @return
+   */
+
+ @PutMapping("/deleteProduct/{id}")
+  public ResponseEntity<Outbound> deleteProduct(@PathVariable("id") Integer id) {
+    Outbound resp = productService.deleteProduct(id);
+    return ResponseEntity.ok(resp);
+  }
 }

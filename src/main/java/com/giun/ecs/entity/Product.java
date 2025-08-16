@@ -65,8 +65,8 @@ public class Product extends BaseEntity {
   private byte[] imageData;
 
   /**
-   * 圖片類型
+   * 商品狀態
    */
-  @Column(name = "image_type")
-  private String imageType;
+  @Column(name = "states", nullable = false)
+  private String states;
 }
