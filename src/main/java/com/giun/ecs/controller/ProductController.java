@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.giun.ecs.dto.request.ProductUploadReq;
 import com.giun.ecs.dto.response.Outbound;
+import com.giun.ecs.entity.Product;
 import com.giun.ecs.service.ProductService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -30,10 +31,10 @@ public class ProductController {
    * @return
    */
   @PostMapping(path = "/addProducts", consumes = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<Outbound> uploadProduct(
+  public ResponseEntity<Product> uploadProduct(
       @RequestBody ProductUploadReq req) {
-    Outbound resp = productService.saveProduct(req);
-    return ResponseEntity.ok(resp);
+    Product saved = productService.saveProduct(req);
+    return ResponseEntity.ok(saved);
   }
 
   /**
@@ -43,8 +44,8 @@ public class ProductController {
    */
   @GetMapping("/products")
   public ResponseEntity<Outbound> getProducts() {
-    Outbound resp = productService.getAllProducts();
-    return ResponseEntity.ok(resp);
+    Outbound response = productService.getAllProducts();
+    return ResponseEntity.ok(response);
   }
 
   /**
@@ -55,8 +56,8 @@ public class ProductController {
    */
   @GetMapping("/products/edit/{id}")
   public ResponseEntity<Outbound> getProductById(@PathVariable("id") Integer id) {
-    Outbound resp = productService.getProductById(id);
-    return ResponseEntity.ok(resp);
+    Outbound response = productService.getProductById(id);
+    return ResponseEntity.ok(response);
   }
 
   /**
@@ -69,10 +70,10 @@ public class ProductController {
   @PutMapping("/updateProducts/{id}")
   public ResponseEntity<Outbound> updateProduct(@PathVariable("id") Integer id,
       @RequestBody ProductUploadReq req) {
-    Outbound resp = productService.updateProduct(id, req);
-    return ResponseEntity.ok(resp);
+    Outbound response = productService.updateProduct(id, req);
+    return ResponseEntity.ok(response);
   }
-
+  
   /**
    * 商品維護列表
    * 
@@ -80,20 +81,21 @@ public class ProductController {
    */
   @GetMapping("/products/list")
   public ResponseEntity<Outbound> productList() {
-    Outbound resp = productService.productList();
-    return ResponseEntity.ok(resp);
-  }
+	    Outbound resp = productService.productList();
+	    return ResponseEntity.ok(resp);
+	  }
 
-  /**
-   * 刪除產品
-   * 
-   * @param id
-   * @return
-   */
-  @PutMapping("/deleteProduct/{id}")
-  public ResponseEntity<Outbound> deleteProduct(@PathVariable("id") Integer id) {
-    Outbound resp = productService.deleteProduct(id);
-    return ResponseEntity.ok(resp);
-  }
+	/**
+	* 刪除產品
+	* 
+	* @param id
+	* @return
+	*/
+	@PutMapping("/deleteProduct/{id}")
+	public ResponseEntity<Outbound> deleteProduct(@PathVariable("id") Integer id) {
+	    Outbound resp = productService.deleteProduct(id);
+	    return ResponseEntity.ok(resp);
+	  }
 
+	
 }
