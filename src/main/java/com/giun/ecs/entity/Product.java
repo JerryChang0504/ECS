@@ -63,6 +63,11 @@ public class Product extends BaseEntity {
   @Lob
   @Column(name = "image_data", columnDefinition = "LONGBLOB")
   private byte[] imageData;
+/*
+   * 圖片類型
+   */
+  @Column(name = "image_type")
+  private String imageType;
 
   /**
    * 商品狀態
