@@ -15,4 +15,5 @@ import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 @SecurityScheme(name = "bearerAuth", type = SecuritySchemeType.HTTP, scheme = "bearer",
     bearerFormat = "JWT")
 public class OpenApiConfig {
+
 }

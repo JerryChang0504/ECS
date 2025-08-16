@@ -40,16 +40,22 @@ public class Product extends BaseEntity {
   private String category;
 
   /**
-   * 商品描述
-   */
-  @Column(name = "description", nullable = false)
-  private String description;
-
-  /**
    * 商品價格
    */
   @Column(name = "price", nullable = false)
   private Integer price;
+
+  /**
+   * 商品庫存
+   */
+  @Column(name = "stock", nullable = false)
+  private Integer stock;
+
+  /**
+   * 商品描述
+   */
+  @Column(name = "description", nullable = false)
+  private String description;
 
   /**
    * 圖片資料
@@ -63,4 +69,10 @@ public class Product extends BaseEntity {
    */
   @Column(name = "image_type")
   private String imageType;
+
+  /**
+   * 商品狀態
+   */
+  @Column(name = "states", nullable = false)
+  private String states;
 }
