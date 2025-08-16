@@ -12,6 +12,7 @@ import com.giun.ecs.dto.response.Outbound;
 import com.giun.ecs.dto.response.ProductResp;
 import com.giun.ecs.dto.response.ProductShow;
 import com.giun.ecs.entity.Product;
+import com.giun.ecs.enums.ProductStutes;
 import com.giun.ecs.repository.ProductRepository;
 
 @Service
@@ -101,7 +102,7 @@ public class ProductService {
 							.imageBase64(
 									generateImageBase64(product.getImageData(),
 											product.getImageType()))
-							.states(product.getStates()).build();
+							.states(ProductStutes.getDesc(product.getStates())).build();
 				}).collect(Collectors.toList());
 
 		return Outbound.ok(result);
@@ -128,9 +129,9 @@ public class ProductService {
 	 * 處理 Base64 圖片字串，解析出圖片二進制資料和類型。
 	 * 
 	 * @param base64String
-	 *            Base64 編碼的圖片字串，可包含 Data URI 前綴。
+	 *                          Base64 編碼的圖片字串，可包含 Data URI 前綴。
 	 * @param existingImageType
-	 *            已知或預設的圖片類型。
+	 *                          已知或預設的圖片類型。
 	 * @return 包含圖片資料和類型的 ImageInfo 物件。
 	 */
 	private ImageInfo processBase64Image(String base64String,
@@ -167,9 +168,9 @@ public class ProductService {
 	 * 產生圖片 Base64 字串
 	 * 
 	 * @param imageData
-	 *            圖片資料
+	 *                  圖片資料
 	 * @param imageType
-	 *            圖片類型
+	 *                  圖片類型
 	 * @return
 	 */
 	private String generateImageBase64(byte[] imageData, String imageType) {
