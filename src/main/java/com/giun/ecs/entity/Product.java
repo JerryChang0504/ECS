@@ -69,4 +69,7 @@ public class Product extends BaseEntity {
    */
   @Column(name = "image_type")
   private String imageType;
+
+  @Column(name = "status", nullable = false)
+  private Integer states;
 }
