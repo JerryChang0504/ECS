@@ -100,9 +100,7 @@ public class ProductService {
 							.stock(product.getStock())
 							.description(product.getDescription())
 							.category(product.getCategory())
-							.imageBase64(
-									generateImageBase64(product.getImageData(),
-											product.getImageType()))
+							.imageBase64(generateImageBase64(product.getImageData(), product.getImageType()))
 							.states(ProductStutes.getDesc(product.getStates())).build();
 				}).collect(Collectors.toList());
 
@@ -110,14 +108,22 @@ public class ProductService {
 	}
 
 	public Outbound deleteProduct(Integer id) {
+
+		productRepository.updateProductStates(id, ProductStutes.DELETE.getCode());
 		Product product = productRepository.findById(id)
-				.orElseThrow(() -> new RuntimeException("Product not found"));
+				.orElseThrow(() -> new RuntimeException("Product not found after update"));
+		ProductResp response = ProductResp.builder()
+				.id(product.getId())
+				.name(product.getName())
+				.price(product.getPrice())
+				.stock(product.getStock())
+				.description(product.getDescription())
+				.category(product.getCategory())
+				.imageBase64(generateImageBase64(product.getImageData(), product.getImageType()))
+				.states(ProductStutes.getDesc(product.getStates()))
+				.build();
 
-		if (product != null) {
-			productRepository.updateProductStates(id, "0");
-		}
-
-		return Outbound.ok("Product u successfully");
+		return Outbound.ok(response);
 	}
 
 	/**
