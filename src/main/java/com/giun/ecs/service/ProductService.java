@@ -53,6 +53,7 @@ public class ProductService {
 
 	public Outbound getAllProducts() {
 		List<ProductShow> result = productRepository.findAll().stream()
+				.filter(product -> product.getStates().equals(ProductStutes.ONSALE.getCode()))
 				.map(product -> {
 
 					return ProductShow.builder().id(product.getId())
