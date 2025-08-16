@@ -111,6 +111,17 @@ public class ProductService {
     return Outbound.ok(result);
   }
 
+  public Outbound deleteProduct(Integer id) {
+    Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
+
+    if (product != null) {
+      productRepository.updateProductStatus(id, "0");
+    }
+
+    return Outbound.ok("Product u successfully");
+  }
+
+
   /**
    * 用來傳遞圖片處理結果的 record。 Record 是 Java 14+ 的特性，適合用來傳遞不可變的資料物件。
    */
