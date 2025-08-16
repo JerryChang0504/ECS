@@ -10,6 +10,7 @@ import com.giun.ecs.dto.response.Outbound;
 import com.giun.ecs.dto.response.ProductResp;
 import com.giun.ecs.dto.response.ProductShow;
 import com.giun.ecs.entity.Product;
+import com.giun.ecs.enums.ProductStates;
 import com.giun.ecs.repository.ProductRepository;
 
 @Service
@@ -53,18 +54,20 @@ public class ProductService {
 	}
 
 	public Outbound getAllProducts() {
-		List<ProductShow> result = productRepository.findAll().stream().map(product -> {
+		List<ProductShow> result = productRepository.findAll().stream()
+				.filter(product -> product.getStates().equals(ProductStates.ONSALE.getCode()))// 過濾出銷售中產品
+				.map(product -> {
 
-			return ProductShow.builder()
-					.id(product.getId())
-					.name(product.getName())
-					.price(product.getPrice())
-					.description(product.getDescription())
-					.category(product.getCategory())
-					.rating(null) // TODO: 根據實際資料庫欄位填入 product.getRating()
-					.imageBase64(generateImageBase64(product.getImageData(), product.getImageType()))
-					.build();
-		}).collect(Collectors.toList());
+					return ProductShow.builder()
+							.id(product.getId())
+							.name(product.getName())
+							.price(product.getPrice())
+							.description(product.getDescription())
+							.category(product.getCategory())
+							.rating(null) // TODO: 根據實際資料庫欄位填入 product.getRating()
+							.imageBase64(generateImageBase64(product.getImageData(), product.getImageType()))
+							.build();
+				}).collect(Collectors.toList());
 
 		return Outbound.ok(result);
 	}
@@ -102,6 +105,7 @@ public class ProductService {
 					.description(product.getDescription())
 					.category(product.getCategory())
 					.imageBase64(generateImageBase64(product.getImageData(), product.getImageType()))
+					.states(ProductStates.getDesc(product.getStates()))
 					.build();
 		}).collect(Collectors.toList());
 
