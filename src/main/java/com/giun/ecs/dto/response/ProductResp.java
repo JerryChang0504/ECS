@@ -32,4 +32,7 @@ public class ProductResp {
 
   @Schema(description = "產品圖片 Base64 字串")
   private String imageBase64; // e.g., "data:image/jpeg;base64,..."
+
+  @Schema(description = "產品狀態")
+  private String status;
 }
