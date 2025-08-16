@@ -90,7 +90,7 @@ public class ProductController {
    * @param id 商品ID
    * @return
    */
-  @PutMapping("/deleteProducts/{id}")
+  @PutMapping("/deleteProduct/{id}")
   public ResponseEntity<Outbound> deleteProduct(@PathVariable("id") Integer id) {
     Outbound resp = productService.deleteProduct(id);
     return ResponseEntity.ok(resp);
