@@ -11,18 +11,18 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Schema(description = "產品資訊")
-public class ProductResponse {
+public class ProductShow {
   @Schema(description = "產品ID")
   private Integer id;
 
   @Schema(description = "產品名稱")
   private String name;
 
-  @Schema(description = "產品描述")
-  private String description;
-
   @Schema(description = "產品價格")
   private Integer price;
+
+  @Schema(description = "產品描述")
+  private String description;
 
   @Schema(description = "產品類別")
   private String category;

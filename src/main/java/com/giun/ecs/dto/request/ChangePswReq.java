@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class ChangePswRequest {
+public class ChangePswReq {
 
   @NotBlank
   private String username;
