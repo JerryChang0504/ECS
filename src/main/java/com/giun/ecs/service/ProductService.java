@@ -25,9 +25,12 @@ public class ProductService {
 		ImageInfo imageInfo = processBase64Image(req.getImageBase64(),
 				req.getImageType());
 
+		System.out.println("接收到的 states = " + req.getStates());
+
 		Product product = Product.builder().name(req.getName())
 				.category(req.getCategory()).price(req.getPrice())
 				.stock(req.getStock()).description(req.getDescription())
+				.states(req.getStates())
 				.imageData(imageInfo.imageData).imageType(imageInfo.imageType)
 				.build();
 
@@ -46,6 +49,7 @@ public class ProductService {
 				.category(product.getCategory())
 				.imageBase64(generateImageBase64(product.getImageData(),
 						product.getImageType()))
+				.states(ProductStutes.getDesc(product.getStates()))
 				.build();
 
 		return Outbound.ok(response);
@@ -82,6 +86,7 @@ public class ProductService {
 				.name(req.getName()).category(req.getCategory())
 				.stock(req.getStock()).price(req.getPrice())
 				.description(req.getDescription())
+				.states(req.getStates())
 				.imageData(imageInfo.imageData).imageType(imageInfo.imageType)
 				.build();
 
