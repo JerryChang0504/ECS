@@ -102,7 +102,7 @@ public class ProductService {
           .description(product.getDescription())
           .category(product.getCategory())
           .imageBase64(generateImageBase64(product.getImageData(), product.getImageType()))
-
+          .states(product.getStates())
           .build();
     }).collect(Collectors.toList());
 
