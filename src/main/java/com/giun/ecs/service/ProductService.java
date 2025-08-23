@@ -10,6 +10,7 @@ import com.giun.ecs.dto.response.Outbound;
 import com.giun.ecs.dto.response.ProductResp;
 import com.giun.ecs.dto.response.ProductShow;
 import com.giun.ecs.entity.Product;
+import com.giun.ecs.enums.ProductStutes;
 import com.giun.ecs.repository.ProductRepository;
 
 @Service
@@ -19,7 +20,8 @@ public class ProductService {
   private ProductRepository productRepository;
 
   public Outbound saveProduct(ProductUploadReq req) {
-    ImageInfo imageInfo = processBase64Image(req.getImageBase64(), req.getImageType());
+    ImageInfo imageInfo = processBase64Image(req.getImageBase64(),
+        req.getImageType());
 
     Product product = Product.builder()
         .name(req.getName())
@@ -37,7 +39,8 @@ public class ProductService {
   }
 
   public Outbound getProductById(Integer id) {
-    Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
+    Product product =
+        productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
 
     ProductResp response = ProductResp.builder()
         .id(product.getId())
@@ -53,24 +56,27 @@ public class ProductService {
   }
 
   public Outbound getAllProducts() {
-    List<ProductShow> result = productRepository.findAll().stream().map(product -> {
+    List<ProductShow> result = productRepository.findAll().stream()
+        .filter(product -> product.getStates().equals(ProductStutes.ONSALE.getCode()))
+        .map(product -> {
 
-      return ProductShow.builder()
-          .id(product.getId())
-          .name(product.getName())
-          .price(product.getPrice())
-          .description(product.getDescription())
-          .category(product.getCategory())
-          .rating(null) // TODO: 根據實際資料庫欄位填入 product.getRating()
-          .imageBase64(generateImageBase64(product.getImageData(), product.getImageType()))
-          .build();
-    }).collect(Collectors.toList());
+          return ProductShow.builder()
+              .id(product.getId())
+              .name(product.getName())
+              .price(product.getPrice())
+              .description(product.getDescription())
+              .category(product.getCategory())
+              .rating(null) // TODO:根據實際資料庫欄位填入product.getRating()
+              .imageBase64(generateImageBase64(product.getImageData(), product.getImageType()))
+              .build();
+        }).collect(Collectors.toList());
 
     return Outbound.ok(result);
   }
 
   public Outbound updateProduct(Integer id, ProductUploadReq req) {
-    Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
+    Product product =
+        productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
 
     ImageInfo imageInfo = processBase64Image(req.getImageBase64(), req.getImageType());
 
@@ -92,31 +98,41 @@ public class ProductService {
 
   public Outbound productList() {
 
-    List<ProductResp> result = productRepository.findAll().stream().map(product -> {
+    List<ProductResp> result = productRepository.findAll().stream()
+        .map(product -> {
 
-      return ProductResp.builder()
-          .id(product.getId())
-          .name(product.getName())
-          .price(product.getPrice())
-          .stock(product.getStock())
-          .description(product.getDescription())
-          .category(product.getCategory())
-          .imageBase64(generateImageBase64(product.getImageData(), product.getImageType()))
-          .states(product.getStates())
-          .build();
-    }).collect(Collectors.toList());
+          return ProductResp.builder()
+              .id(product.getId())
+              .name(product.getName())
+              .price(product.getPrice())
+              .stock(product.getStock())
+              .description(product.getDescription())
+              .category(product.getCategory())
+              .imageBase64(generateImageBase64(product.getImageData(), product.getImageType()))
+              .states(ProductStutes.getDesc(product.getStates())).build();
+        }).collect(Collectors.toList());
 
     return Outbound.ok(result);
   }
 
   public Outbound deleteProduct(Integer id) {
-    Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
 
-    if (product != null) {
-      productRepository.updateProductStates(id, "0");
-    }
+    productRepository.updateProductStates(id, ProductStutes.DELETE.getCode());
+    Product product = productRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Product not found after update"));
 
-    return Outbound.ok("Product u successfully");
+    ProductResp response = ProductResp.builder()
+        .id(product.getId())
+        .name(product.getName())
+        .price(product.getPrice())
+        .stock(product.getStock())
+        .description(product.getDescription())
+        .category(product.getCategory())
+        .imageBase64(generateImageBase64(product.getImageData(), product.getImageType()))
+        .states(ProductStutes.getDesc(product.getStates()))
+        .build();
+
+    return Outbound.ok(response);
   }
 
   /**
@@ -128,7 +144,7 @@ public class ProductService {
   /**
    * 處理 Base64 圖片字串，解析出圖片二進制資料和類型。
    * 
-   * @param base64String      Base64 編碼的圖片字串，可包含 Data URI 前綴。
+   * @param base64String Base64 編碼的圖片字串，可包含 Data URI 前綴。
    * @param existingImageType 已知或預設的圖片類型。
    * @return 包含圖片資料和類型的 ImageInfo 物件。
    */
@@ -146,7 +162,8 @@ public class ProductService {
       if (commaIndex != -1) {
         String dataUri = base64String.substring(0, commaIndex);
         if (dataUri.contains(";base64")) {
-          imageType = dataUri.substring(dataUri.indexOf(':') + 1, dataUri.indexOf(';'));
+          imageType = dataUri.substring(dataUri.indexOf(':') + 1,
+              dataUri.indexOf(';'));
         }
         base64Content = base64String.substring(commaIndex + 1);
       }
