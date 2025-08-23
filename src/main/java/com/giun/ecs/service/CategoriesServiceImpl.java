@@ -56,4 +56,10 @@ public class CategoriesServiceImpl implements CategoriesService {
         return Outbound.ok(result);
     }
 
+    @Override
+    public Outbound deleteCategorie(Integer id) throws Exception {
+        categoriesRepository.deleteById(id);
+        return Outbound.ok("Category deleted successfully");
+    }
+
 }
