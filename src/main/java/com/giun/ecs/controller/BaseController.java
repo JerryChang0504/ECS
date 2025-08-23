@@ -8,7 +8,7 @@ public abstract class BaseController {
    * @param authHeader
    * @return
    */
-  protected String extractBearerToken(String authHeader) {
+  protected String extractBearerToken(String authHeader) throws IllegalArgumentException {
     if (authHeader == null || !authHeader.startsWith("Bearer ")) {
       throw new IllegalArgumentException("無效的授權標頭（Authorization header）");
     }
@@ -18,10 +18,9 @@ public abstract class BaseController {
   /**
    * 檢查必填參數是否為空
    * 
-   * @param values
-   *          必填參數
+   * @param values 必填參數
    */
-  protected void checkRequired(String... values) {
+  protected void checkRequired(String... values) throws IllegalArgumentException {
     for (String value : values) {
       if (value == null || value.trim().isEmpty()) {
         throw new IllegalArgumentException("有必填參數為空");
