@@ -13,6 +13,8 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
 	@Modifying
 	@Transactional
-	@Query("UPDATE Product p SET p.status = :status WHERE p.id = :id")
-	void updateProductStatus(@Param("id") Integer id, @Param("status") String status);
+	@Query("UPDATE Product p SET p.states = :states WHERE p.id = :id")
+	void updateProductStates(@Param("id") Integer id,
+			@Param("states") String states);
+
 }
