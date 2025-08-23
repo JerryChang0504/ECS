@@ -31,7 +31,7 @@ public class ProductController {
    */
   @PostMapping(path = "/addProducts", consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Outbound> uploadProduct(
-      @RequestBody ProductUploadReq req) {
+      @RequestBody ProductUploadReq req) throws Exception {
     Outbound resp = productService.saveProduct(req);
     return ResponseEntity.ok(resp);
   }
@@ -42,7 +42,7 @@ public class ProductController {
    * @return
    */
   @GetMapping("/products")
-  public ResponseEntity<Outbound> getProducts() {
+  public ResponseEntity<Outbound> getProducts() throws Exception {
     Outbound resp = productService.getAllProducts();
     return ResponseEntity.ok(resp);
   }
@@ -54,7 +54,7 @@ public class ProductController {
    * @return
    */
   @GetMapping("/products/edit/{id}")
-  public ResponseEntity<Outbound> getProductById(@PathVariable("id") Integer id) {
+  public ResponseEntity<Outbound> getProductById(@PathVariable("id") Integer id) throws Exception {
     Outbound resp = productService.getProductById(id);
     return ResponseEntity.ok(resp);
   }
@@ -62,13 +62,13 @@ public class ProductController {
   /**
    * 更新產品
    * 
-   * @param id  商品ID
+   * @param id 商品ID
    * @param req 更新資料
    * @return
    */
   @PutMapping("/updateProducts/{id}")
   public ResponseEntity<Outbound> updateProduct(@PathVariable("id") Integer id,
-      @RequestBody ProductUploadReq req) {
+      @RequestBody ProductUploadReq req) throws Exception {
     Outbound resp = productService.updateProduct(id, req);
     return ResponseEntity.ok(resp);
   }
@@ -79,19 +79,19 @@ public class ProductController {
    * @return
    */
   @GetMapping("/products/list")
-  public ResponseEntity<Outbound> productList() {
+  public ResponseEntity<Outbound> productList() throws Exception {
     Outbound resp = productService.productList();
     return ResponseEntity.ok(resp);
   }
 
-/**
+  /**
    * 刪除產品
    * 
    * @param id
    * @return
    */
   @PutMapping("/deleteProduct/{id}")
-  public ResponseEntity<Outbound> deleteProduct(@PathVariable("id") Integer id) {
+  public ResponseEntity<Outbound> deleteProduct(@PathVariable("id") Integer id) throws Exception {
     Outbound resp = productService.deleteProduct(id);
     return ResponseEntity.ok(resp);
   }
