@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "更新使用者資料請求")
-public class UpdateUserReq {
+public class UpdateUserRequest {
   @NotBlank
   @Schema(description = "使用者帳號", example = "John_doe")
   private String username;

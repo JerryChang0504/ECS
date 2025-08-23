@@ -4,10 +4,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.giun.ecs.dto.request.ChangePswReq;
-import com.giun.ecs.dto.request.LoginReq;
-import com.giun.ecs.dto.request.RegisterReq;
-import com.giun.ecs.dto.request.UpdateUserReq;
+import com.giun.ecs.dto.request.ChangePswRequest;
+import com.giun.ecs.dto.request.LoginRequest;
+import com.giun.ecs.dto.request.RegisterRequest;
+import com.giun.ecs.dto.request.UpdateUserRequest;
 import com.giun.ecs.dto.response.Outbound;
 import com.giun.ecs.dto.response.UserResponse;
 import com.giun.ecs.entity.UserInfo;
@@ -33,7 +33,7 @@ public class AuthService {
    * @param req
    * @return
    */
-  public Outbound register(RegisterReq req) throws ApplicationException {
+  public Outbound register(RegisterRequest req) throws ApplicationException {
     // 帳號與 Email 重複檢查
     if (userService.existsByUsername(req.getUsername())) {
       throw new ApplicationException(ResultCode.ACCOUNT_IS_EXIST);
@@ -59,7 +59,7 @@ public class AuthService {
    * @param req
    * @return
    */
-  public Outbound login(LoginReq req) throws ApplicationException {
+  public Outbound login(LoginRequest req) throws ApplicationException {
     UserInfo userInfo = userService.findUserByUsername(req.getUsername());
 
     if (userInfo == null) {
@@ -108,7 +108,7 @@ public class AuthService {
    * @return
    */
   public Outbound updateUserProfile(String username,
-      UpdateUserReq request) throws Exception {
+      UpdateUserRequest request) throws Exception {
     UserInfo userInfo = userService.findUserByUsername(username);
 
     if (userInfo == null) {
@@ -153,7 +153,7 @@ public class AuthService {
    * @param request
    * @return
    */
-  public Outbound updatePassword(ChangePswReq request) {
+  public Outbound updatePassword(ChangePswRequest request) {
     UserInfo userInfo = userService
         .findUserByUsername(request.getUsername());
     userInfo.setPassword(passwordEncoder.encode(request.getNewPassword()));

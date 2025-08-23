@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "使用者註冊請求資料")
-public class RegisterReq {
+public class RegisterRequest {
 
   @NotBlank
   @Schema(description = "使用者帳號", example = "john_doe")

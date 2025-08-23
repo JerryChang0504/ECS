@@ -5,8 +5,7 @@ import lombok.Data;
 
 @Data
 @Schema(description = "產品上傳請求")
-public class ProductUploadReq {
-
+public class ProductUploadRequest {
 
   @Schema(description = "產品名稱", example = "iPhone 13 Pro")
   private String name;

@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "登入請求")
-public class LoginReq {
+public class LoginRequest {
   @NotBlank
   @Schema(description = "使用者帳號", example = "john_doe")
   private String username;

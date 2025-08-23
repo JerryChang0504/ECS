@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.giun.ecs.dto.request.ChangePswReq;
-import com.giun.ecs.dto.request.LoginReq;
-import com.giun.ecs.dto.request.RegisterReq;
-import com.giun.ecs.dto.request.UpdateUserReq;
+import com.giun.ecs.dto.request.ChangePswRequest;
+import com.giun.ecs.dto.request.LoginRequest;
+import com.giun.ecs.dto.request.RegisterRequest;
+import com.giun.ecs.dto.request.UpdateUserRequest;
 import com.giun.ecs.dto.response.Outbound;
 import com.giun.ecs.exception.ApplicationException;
 import com.giun.ecs.service.AuthService;
@@ -39,7 +39,7 @@ public class AuthController extends BaseController {
   @PostMapping("/register")
   @Operation(summary = "使用者註冊", description = "建立新使用者帳號")
   public ResponseEntity<Outbound> register(
-      @Valid @RequestBody RegisterReq req)
+      @Valid @RequestBody RegisterRequest req)
       throws ApplicationException {
     Outbound response = authService.register(req);
     return ResponseEntity.status(HttpStatus.OK).body(response);
@@ -56,7 +56,7 @@ public class AuthController extends BaseController {
   @PostMapping("/login")
   @Operation(summary = "使用者登入", description = "使用帳號密碼登入，成功回傳 JWT Token")
   public ResponseEntity<Outbound> login(
-      @Valid @RequestBody LoginReq request)
+      @Valid @RequestBody LoginRequest request)
       throws ApplicationException {
     Outbound res = authService.login(request);
     return ResponseEntity.status(HttpStatus.OK).body(res);
@@ -88,7 +88,7 @@ public class AuthController extends BaseController {
   @PutMapping("/profile")
   @Operation(summary = "更新使用者資料")
   public ResponseEntity<Outbound> updateUserProfile(
-      @Valid @RequestBody UpdateUserReq request) throws Exception {
+      @Valid @RequestBody UpdateUserRequest request) throws Exception {
     Outbound response = authService.updateUserProfile(request.getUsername(),
         request);
     return ResponseEntity.status(HttpStatus.OK).body(response);
@@ -116,7 +116,7 @@ public class AuthController extends BaseController {
   @PostMapping("/change-password")
   @Operation(summary = "修改密碼")
   public ResponseEntity<Outbound> changePassword(
-      @Valid @RequestBody ChangePswReq request) throws Exception {
+      @Valid @RequestBody ChangePswRequest request) throws Exception {
     Outbound response = authService.updatePassword(request);
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
