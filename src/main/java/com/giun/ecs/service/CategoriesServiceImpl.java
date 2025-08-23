@@ -1,18 +1,11 @@
 package com.giun.ecs.service;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.giun.ecs.dto.request.AddOptionReq;
-import com.giun.ecs.dto.response.CategoriesResponse;
-import com.giun.ecs.dto.response.OptionResp;
 import com.giun.ecs.dto.response.Outbound;
 import com.giun.ecs.entity.Categories;
-import com.giun.ecs.enums.ResultCode;
-import com.giun.ecs.exception.ApplicationException;
 import com.giun.ecs.repository.CategoriesRepository;
 
 @Service
@@ -21,65 +14,24 @@ public class CategoriesServiceImpl implements CategoriesService {
     @Autowired
     private CategoriesRepository categoriesRepository;
 
-    /**
-     * 取得所有選項
-     */
     @Override
-    public Outbound getAllCategories() {
+    public Outbound addCategorie(AddOptionReq req) throws Exception {
 
-        List<CategoriesResponse> result = categoriesRepository.findAll().stream()
-                .map(category -> {
-                    return CategoriesResponse.builder()
-                            .id(category.getId())
-                            .listName(category.getListname())
-                            .lable(category.getName())
-                            .value(category.getValue())
-                            .sortOrder(category.getSortOrder())
-                            .isActive(category.getIsActive())
-                            .description(category.getDescription())
-                            .build();
-                }).collect(Collectors.toList());
-
-        return Outbound.ok(result);
-    }
-
-    /**
-     * 新增選項
-     */
-    @Override
-    public Outbound addCategory(AddOptionReq req) {
-
-        Categories categorie = Categories.builder()
-                .listname(req.getListName())
-                .name(req.getOptionName())
-                .value(req.getOptionValue())
+        Categories categories = Categories.builder()
+                .listName(req.getListName())
+                .name(req.getName())
+                .value(req.getValue())
                 .sortOrder(req.getSortOrder())
                 .isActive(req.getIsActive())
                 .description(req.getDescription())
                 .build();
+        try {
+            categoriesRepository.save(categories);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
-        Categories addCategorie = categoriesRepository.save(categorie);
-
-        return Outbound.ok(addCategorie);
-    }
-
-    /**
-     * 取得選項分類
-     */
-    @Override
-    public Outbound getCategoriesByListName(String listName) throws ApplicationException {
-        List<Categories> categories = categoriesRepository.findByListNameAndIsActiveTrueOrderBySortOrderAsc(listName);
-
-        List<OptionResp> result = categories.stream()
-                .map(category -> {
-                    return OptionResp.builder()
-                            .label(category.getName())
-                            .value(category.getValue())
-                            .sortOrder(category.getSortOrder())
-                            .build();
-                }).collect(Collectors.toList());
-
-        return Outbound.ok(result);
+        return Outbound.ok("Category added successfully");
     }
 
 }
