@@ -4,15 +4,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.giun.ecs.dto.request.AddOptionReq;
 import com.giun.ecs.dto.response.CategoriesResponse;
 import com.giun.ecs.dto.response.OptionResp;
 import com.giun.ecs.dto.response.Outbound;
 import com.giun.ecs.entity.Categories;
+import com.giun.ecs.enums.ResultCode;
 import com.giun.ecs.exception.ApplicationException;
 import com.giun.ecs.repository.CategoriesRepository;
 
+@Service
 public class CategoriesServiceImpl implements CategoriesService {
 
     @Autowired
@@ -26,10 +29,9 @@ public class CategoriesServiceImpl implements CategoriesService {
 
         List<CategoriesResponse> result = categoriesRepository.findAll().stream()
                 .map(category -> {
-
                     return CategoriesResponse.builder()
                             .id(category.getId())
-                            .listName(category.getListName())
+                            .listName(category.getListname())
                             .lable(category.getName())
                             .value(category.getValue())
                             .sortOrder(category.getSortOrder())
@@ -67,10 +69,6 @@ public class CategoriesServiceImpl implements CategoriesService {
     @Override
     public Outbound getCategoriesByListName(String listName) throws ApplicationException {
         List<Categories> categories = categoriesRepository.findByListNameAndIsActiveTrueOrderBySortOrderAsc(listName);
-
-        if (categories.isEmpty()) {
-            throw new ApplicationException("Categories not found");
-        }
 
         List<OptionResp> result = categories.stream()
                 .map(category -> {
