@@ -12,6 +12,8 @@ import com.giun.ecs.service.CategoriesService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/options")
@@ -24,6 +26,12 @@ public class OptionsController {
     @PostMapping("/add")
     public ResponseEntity<Outbound> AddOption(@RequestBody AddOptionRequest req) throws Exception {
         Outbound resp = categoriesService.addCategorie(req);
+        return ResponseEntity.ok(resp);
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<Outbound> allOptions() throws Exception {
+        Outbound resp = categoriesService.allCategories();
         return ResponseEntity.ok(resp);
     }
 
