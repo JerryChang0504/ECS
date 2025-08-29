@@ -1,6 +1,7 @@
 package com.giun.ecs.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,6 +46,13 @@ public class OptionsController {
   @DeleteMapping("/delete/{id}")
   public ResponseEntity<Outbound> deleteOption(@PathVariable("id") Integer id) throws Exception {
     Outbound resp = categoriesService.deleteCategorie(id);
+    return ResponseEntity.ok(resp);
+  }
+
+  @GetMapping("/getByListName")
+  public ResponseEntity<Outbound> getCategoriesByListName(@Param("listName") String listName)
+      throws Exception {
+    Outbound resp = categoriesService.getCategoriesByListName(listName);
     return ResponseEntity.ok(resp);
   }
 

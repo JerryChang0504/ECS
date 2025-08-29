@@ -20,6 +20,9 @@ public class ProductUploadReq {
   @Schema(description = "產品庫存", example = "10")
   private Integer stock;
 
+  @Schema(description = "產品狀態", example = "1")
+  private String states;
+
   @Schema(description = "產品描述", example = "iPhone 13 Pro")
   private String description;
 

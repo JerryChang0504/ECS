@@ -13,4 +13,6 @@ public interface CategoriesService {
 
   public Outbound deleteCategorie(Integer id) throws Exception;
 
+  public Outbound getCategoriesByListName(String listName) throws Exception;
+
 }
