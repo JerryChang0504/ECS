@@ -55,4 +55,24 @@ public class CategoriesServiceImpl implements CategoriesService {
         return Outbound.ok(result);
     }
 
+    @Override
+    public Outbound updateCategorie(Integer id, AddOptionReq req) throws Exception {
+        Categories categorie = categoriesRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+
+        Categories updateCategories = Categories.builder()
+                .id(categorie.getId())
+                .listname(req.getListName())
+                .name(req.getName())
+                .value(req.getValue())
+                .sortorder(req.getSortOrder())
+                .isActive(req.getIsActive())
+                .description(req.getDescription())
+                .build();
+
+        categoriesRepository.save(updateCategories);
+
+        return Outbound.ok("Category updated successfully");
+    }
+
 }

@@ -8,4 +8,6 @@ public interface CategoriesService {
     public Outbound addCategorie(AddOptionReq req) throws Exception;
 
     public Outbound allCategories() throws Exception;
+
+    public Outbound updateCategorie(Integer id, AddOptionReq req) throws Exception;
 }

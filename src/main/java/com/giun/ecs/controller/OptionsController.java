@@ -12,7 +12,9 @@ import com.giun.ecs.service.CategoriesService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
@@ -35,4 +37,10 @@ public class OptionsController {
         return ResponseEntity.ok(resp);
     }
 
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Outbound> updateOption(@PathVariable("id") Integer id,
+            @RequestBody AddOptionReq req) throws Exception {
+        Outbound resp = categoriesService.updateCategorie(id, req);
+        return ResponseEntity.ok(resp);
+    }
 }
