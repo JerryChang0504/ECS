@@ -43,4 +43,11 @@ public class OptionsController {
         return ResponseEntity.ok(resp);
     }
 
+    @PutMapping("update/{id}")
+    public ResponseEntity<Outbound> updateOption(@PathVariable("id") Integer id, @RequestBody AddOptionReq req)
+            throws Exception {
+        Outbound resp = categoriesService.updateCategorie(id, req);
+        return ResponseEntity.ok(resp);
+    }
+
 }

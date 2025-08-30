@@ -62,4 +62,23 @@ public class CategoriesServiceImpl implements CategoriesService {
         return Outbound.ok("Category deleted successfully");
     }
 
+    @Override
+    public Outbound updateCategorie(Integer id, AddOptionReq req) throws Exception {
+        Categories categories = categoriesRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+
+        Categories updateCategories = Categories.builder()
+                .id(categories.getId())
+                .listName(req.getListName())
+                .name(req.getName())
+                .value(req.getValue())
+                .sortOrder(req.getSortOrder())
+                .isActive(req.getIsActive())
+                .description(req.getDescription())
+                .build();
+
+        categoriesRepository.save(updateCategories);
+        throw new UnsupportedOperationException("Unimplemented method 'updateCategorie'");
+    }
+
 }
