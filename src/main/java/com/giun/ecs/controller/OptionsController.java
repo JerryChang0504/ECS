@@ -1,6 +1,7 @@
 package com.giun.ecs.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,4 +52,10 @@ public class OptionsController {
         return ResponseEntity.ok(resp);
     }
 
+    @GetMapping("/getByListName")
+    public ResponseEntity<Outbound> getCategoriesByListName(@Param("listName") String listName)
+            throws Exception {
+        Outbound resp = categoriesService.getCategoriesByListName(listName);
+        return ResponseEntity.ok(resp);
+    }
 }

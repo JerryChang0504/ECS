@@ -62,7 +62,7 @@ public class ProductController {
   /**
    * 更新產品
    * 
-   * @param id 商品ID
+   * @param id  商品ID
    * @param req 更新資料
    * @return
    */

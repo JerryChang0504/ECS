@@ -85,6 +85,7 @@ public class ProductService {
         .category(req.getCategory())
         .stock(req.getStock())
         .price(req.getPrice())
+        .states(req.getStates())
         .description(req.getDescription())
         .imageData(imageInfo.imageData)
         .imageType(imageInfo.imageType)

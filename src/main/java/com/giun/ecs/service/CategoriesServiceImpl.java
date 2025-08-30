@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import com.giun.ecs.dto.request.AddOptionReq;
 import com.giun.ecs.dto.response.OptionResp;
 import com.giun.ecs.dto.response.Outbound;
+import com.giun.ecs.dto.response.SelectOptions;
 import com.giun.ecs.entity.Categories;
+import com.giun.ecs.exception.ApplicationException;
 import com.giun.ecs.repository.CategoriesRepository;
 
 @Service
@@ -83,6 +85,26 @@ public class CategoriesServiceImpl implements CategoriesService {
         categoriesRepository.save(updateCategories);
 
         return Outbound.ok("Category updated successfully");
+    }
+
+    @Override
+    public Outbound getCategoriesByListName(String listName) throws Exception {
+        List<Categories> categories = categoriesRepository.findByListNameAndIsActiveTrueOrderBySortOrderAsc(listName);
+
+        if (categories.isEmpty()) {
+            throw new RuntimeException("Categories not found");
+        }
+
+        List<SelectOptions> result = categories.stream()
+                .map(categorie -> {
+                    return SelectOptions.builder()
+                            .label(categorie.getName())
+                            .value(categorie.getValue())
+                            .sortOrder(categorie.getSortOrder())
+                            .build();
+                }).collect(Collectors.toList());
+
+        return Outbound.ok(result);
     }
 
 }

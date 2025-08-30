@@ -13,4 +13,5 @@ public interface CategoriesService {
 
     public Outbound updateCategorie(Integer id, AddOptionReq req) throws Exception;
 
+    public Outbound getCategoriesByListName(String listName) throws Exception;
 }
