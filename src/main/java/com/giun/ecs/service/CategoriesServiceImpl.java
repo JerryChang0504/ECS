@@ -1,5 +1,6 @@
 package com.giun.ecs.service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,6 +42,10 @@ public class CategoriesServiceImpl implements CategoriesService {
     @Override
     public Outbound allCategories() throws Exception {
         List<OptionResp> result = categoriesRepository.findAll().stream()
+                // 查詢自動排序
+                .sorted(Comparator.comparing(Categories::getListName)
+                        .thenComparing(Categories::getSortOrder))
+
                 .map(Categories -> {
                     return OptionResp.builder()
                             .id(Categories.getId())

@@ -124,6 +124,7 @@ public class ProductService {
         .name(product.getName())
         .price(product.getPrice())
         .stock(product.getStock())
+        .status(product.getStatus())
         .description(product.getDescription())
         .category(product.getCategory())
         .imageBase64(generateImageBase64(product.getImageData(), product.getImageType()))
