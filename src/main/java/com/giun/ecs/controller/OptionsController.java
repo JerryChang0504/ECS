@@ -12,7 +12,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
@@ -32,6 +34,19 @@ public class OptionsController {
     @GetMapping("/list")
     public ResponseEntity<Outbound> allOptions() throws Exception {
         Outbound resp = categoriesService.allCategories();
+        return ResponseEntity.ok(resp);
+    }
+
+    @PutMapping("/delete/{id}")
+    public ResponseEntity<Outbound> deleteOption(@PathVariable("id") Integer id) throws Exception {
+        Outbound resp = categoriesService.deleteCategorie(id);
+        return ResponseEntity.ok(resp);
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Outbound> updateOption(@PathVariable("id") Integer id,
+            @RequestBody AddOptionReq req) throws Exception {
+        Outbound resp = categoriesService.updateCategorie(id, req);
         return ResponseEntity.ok(resp);
     }
 }
