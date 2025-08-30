@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,7 +38,7 @@ public class OptionsController {
         return ResponseEntity.ok(resp);
     }
 
-    @PutMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Outbound> deleteOption(@PathVariable("id") Integer id) throws Exception {
         Outbound resp = categoriesService.deleteCategorie(id);
         return ResponseEntity.ok(resp);
