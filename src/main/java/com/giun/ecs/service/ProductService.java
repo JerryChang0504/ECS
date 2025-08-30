@@ -115,7 +115,7 @@ public class ProductService {
 
   public Outbound deleteProduct(Integer id) {
 
-    productRepository.updateProductStates(id, ProductStatus.DELETED.getCode());
+    productRepository.updateProductStatus(id, ProductStatus.DELETED.getCode());
 
     Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
 
