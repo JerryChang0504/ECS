@@ -8,6 +8,7 @@ import com.giun.ecs.dto.request.ChangePswReq;
 import com.giun.ecs.dto.request.LoginReq;
 import com.giun.ecs.dto.request.RegisterReq;
 import com.giun.ecs.dto.request.UpdateUserReq;
+import com.giun.ecs.dto.response.LoginResp;
 import com.giun.ecs.dto.response.Outbound;
 import com.giun.ecs.dto.response.UserResponse;
 import com.giun.ecs.entity.UserInfo;
@@ -72,7 +73,11 @@ public class AuthService {
     }
     String token = jwtUtil.generateToken(userInfo);
 
-    return Outbound.ok(token);
+    LoginResp loginResp = LoginResp.builder()
+        .userRole(userInfo.getRole())
+        .token(token).build();
+
+    return Outbound.ok(loginResp);
   }
 
   /**
