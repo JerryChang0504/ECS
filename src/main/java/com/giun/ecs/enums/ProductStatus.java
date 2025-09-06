@@ -8,16 +8,16 @@ import lombok.Getter;
 public enum ProductStatus {
     ONSALE("2", "銷售中"),
     STOPED("1", "停售"),
-    DELETED("0", "已刪除");
+    DELETE("0", "刪除");
 
     private final String code;
-    private final String des;
+    private final String desc;
 
-    // 取得產品描述
-    public static String getDescription(String code) {
-        for (ProductStatus status : ProductStatus.values()) {
-            if (status.getCode().equals(code)) {
-                return status.getDes();
+    // 取得產品狀態描述
+    public static String getDesc(String code) {
+        for (ProductStatus productStutes : ProductStatus.values()) {
+            if (productStutes.getCode().equals(code)) {
+                return productStutes.getDesc();
             }
         }
         return code;

@@ -46,6 +46,7 @@ public class ProductService {
         .name(product.getName())
         .price(product.getPrice())
         .stock(product.getStock())
+        .status(product.getStatus())
         .description(product.getDescription())
         .category(product.getCategory())
         .imageBase64(generateImageBase64(product.getImageData(), product.getImageType()))
@@ -84,6 +85,7 @@ public class ProductService {
         .category(req.getCategory())
         .stock(req.getStock())
         .price(req.getPrice())
+        .status(product.getStatus())
         .description(req.getDescription())
         .imageData(imageInfo.imageData)
         .imageType(imageInfo.imageType)
@@ -96,39 +98,38 @@ public class ProductService {
 
   public Outbound productList() {
 
-    List<ProductResp> result = productRepository.findAll().stream().map(product -> {
+    List<ProductResp> result = productRepository.findAll().stream()
+        .map(product -> {
 
-      return ProductResp.builder()
-          .id(product.getId())
-          .name(product.getName())
-          .price(product.getPrice())
-          .stock(product.getStock())
-          .description(product.getDescription())
-          .category(product.getCategory())
-          .imageBase64(generateImageBase64(product.getImageData(), product.getImageType()))
-          .status(ProductStatus.getDescription(product.getStatus()))
-          .build();
-    }).collect(Collectors.toList());
+          return ProductResp.builder()
+              .id(product.getId())
+              .name(product.getName())
+              .price(product.getPrice())
+              .stock(product.getStock())
+              .description(product.getDescription())
+              .category(product.getCategory())
+              .imageBase64(generateImageBase64(product.getImageData(), product.getImageType()))
+              .status(ProductStatus.getDesc(product.getStatus())).build();
+        }).collect(Collectors.toList());
 
     return Outbound.ok(result);
   }
 
   public Outbound deleteProduct(Integer id) {
 
-    productRepository.updateProductStatus(id, ProductStatus.DELETED.getCode());
-
-    Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
+    productRepository.updateProductStatus(id, ProductStatus.DELETE.getCode());
+    Product product = productRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Product not found after update"));
 
     ProductResp response = ProductResp.builder()
         .id(product.getId())
         .name(product.getName())
         .price(product.getPrice())
         .stock(product.getStock())
-        .status(product.getStatus())
         .description(product.getDescription())
         .category(product.getCategory())
         .imageBase64(generateImageBase64(product.getImageData(), product.getImageType()))
-        .status(ProductStatus.getDescription(product.getStatus()))
+        .status(ProductStatus.getDesc(product.getStatus()))
         .build();
 
     return Outbound.ok(response);

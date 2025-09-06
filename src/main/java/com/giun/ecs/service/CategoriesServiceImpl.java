@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.giun.ecs.dto.request.AddOptionReq;
 import com.giun.ecs.dto.response.OptionResp;
 import com.giun.ecs.dto.response.Outbound;
+import com.giun.ecs.dto.response.SelectOptions;
 import com.giun.ecs.entity.Categories;
 import com.giun.ecs.repository.CategoriesRepository;
 
@@ -69,11 +70,11 @@ public class CategoriesServiceImpl implements CategoriesService {
 
     @Override
     public Outbound updateCategorie(Integer id, AddOptionReq req) throws Exception {
-        Categories categories = categoriesRepository.findById(id)
+        Categories categorie = categoriesRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Category not found"));
 
         Categories updateCategories = Categories.builder()
-                .id(categories.getId())
+                .id(categorie.getId())
                 .listName(req.getListName())
                 .name(req.getName())
                 .value(req.getValue())
@@ -83,7 +84,28 @@ public class CategoriesServiceImpl implements CategoriesService {
                 .build();
 
         categoriesRepository.save(updateCategories);
-        throw new UnsupportedOperationException("Unimplemented method 'updateCategorie'");
+
+        return Outbound.ok("Category updated successfully");
+    }
+
+    @Override
+    public Outbound getCategoriesByListName(String listName) throws Exception {
+        List<Categories> categories = categoriesRepository.findByListNameAndIsActiveTrueOrderBySortOrderAsc(listName);
+
+        if (categories.isEmpty()) {
+            throw new RuntimeException("Categories not found");
+        }
+
+        List<SelectOptions> result = categories.stream()
+                .map(categorie -> {
+                    return SelectOptions.builder()
+                            .label(categorie.getName())
+                            .value(categorie.getValue())
+                            .sortOrder(categorie.getSortOrder())
+                            .build();
+                }).collect(Collectors.toList());
+
+        return Outbound.ok(result);
     }
 
 }
