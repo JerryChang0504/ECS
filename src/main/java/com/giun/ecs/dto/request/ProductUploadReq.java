@@ -22,12 +22,12 @@ public class ProductUploadReq {
   @Schema(description = "產品描述", example = "iPhone 13 Pro")
   private String description;
 
+  @Schema(description = "產品狀態", example = "銷售中")
+  private String states;
+
   @Schema(description = "產品圖片 Base64 字串", example = "iVBORw0KGgoAAAANSUhEUgAA...")
   private String imageBase64;
 
   @Schema(description = "產品圖片格式", example = "image/png")
   private String imageType;
-
-  @Schema(description = "產品狀態")
-  private String states;
 }

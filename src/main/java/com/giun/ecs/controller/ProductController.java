@@ -87,7 +87,7 @@ public class ProductController {
   /**
    * 刪除產品
    * 
-   * @param id 商品ID
+   * @param id
    * @return
    */
   @PutMapping("/deleteProduct/{id}")

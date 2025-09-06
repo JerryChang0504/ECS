@@ -4,7 +4,8 @@ import com.giun.ecs.dto.request.AddOptionReq;
 import com.giun.ecs.dto.response.Outbound;
 
 public interface CategoriesService {
-    public Outbound addCategories(AddOptionReq req) throws Exception;
+
+    public Outbound addCategorie(AddOptionReq req) throws Exception;
 
     public Outbound allCategories() throws Exception;
 
@@ -12,4 +13,5 @@ public interface CategoriesService {
 
     public Outbound updateCategorie(Integer id, AddOptionReq req) throws Exception;
 
+    public Outbound getCategoriesByListName(String listName) throws Exception;
 }

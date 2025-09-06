@@ -34,5 +34,5 @@ public class ProductResp {
   private String imageBase64; // e.g., "data:image/jpeg;base64,..."
 
   @Schema(description = "商品狀態")
-	private String states;
+  private String states;
 }
