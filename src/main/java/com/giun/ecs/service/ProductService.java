@@ -3,10 +3,13 @@ package com.giun.ecs.service;
 import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.giun.ecs.dto.request.ProductUploadRequest;
 import com.giun.ecs.dto.response.Outbound;
+import com.giun.ecs.dto.response.ProductManageResponse;
 import com.giun.ecs.dto.response.ProductResponse;
 import com.giun.ecs.entity.Product;
 import com.giun.ecs.repository.ProductRepository;
@@ -79,7 +82,7 @@ public class ProductService {
   }
 
   public Outbound getAllProducts() {
-    List<ProductResponse> result = productRepository.findAll().stream().map(product -> {
+    List<ProductResponse> result = productRepository.findByStatesNotDelete().stream().map(product -> {
       String imageBase64 = null;
       // 避免不必要的編碼操作
       if (product.getImageData() != null && product.getImageType() != null) {
@@ -94,6 +97,29 @@ public class ProductService {
           product.getPrice(),
           product.getCategory(),
           null, // TODO: 根據實際資料庫欄位填入 product.getRating()
+          imageBase64);
+    }).collect(Collectors.toList());
+
+    return Outbound.ok(result);
+  }
+
+  public Outbound getProductsManage() {
+    List<ProductManageResponse> result = productRepository.findAll().stream().map(product -> {
+      String imageBase64 = null;
+      // 避免不必要的編碼操作
+      if (product.getImageData() != null && product.getImageType() != null) {
+        String base64 = Base64.getEncoder().encodeToString(product.getImageData());
+        imageBase64 = "data:" + product.getImageType() + ";base64," + base64;
+      }
+
+      return new ProductManageResponse(
+          product.getId(),
+          product.getName(),
+          product.getDescription(),
+          product.getPrice(),
+          product.getStock(),
+          product.getStates(),
+          product.getCategory(),
           imageBase64);
     }).collect(Collectors.toList());
 
@@ -137,6 +163,8 @@ public class ProductService {
         .category(req.getCategory())
         .description(req.getDescription())
         .price(req.getPrice())
+        .stock(req.getStock())
+        .states(req.getStates())
         .imageData(imageBytes)
         .imageType(imageType)
         .build();

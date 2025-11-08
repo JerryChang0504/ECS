@@ -7,7 +7,6 @@ import lombok.Data;
 @Schema(description = "產品上傳請求")
 public class ProductUploadRequest {
 
-
   @Schema(description = "產品名稱", example = "iPhone 13 Pro")
   private String name;
 
@@ -19,6 +18,12 @@ public class ProductUploadRequest {
 
   @Schema(description = "產品價格", example = "9999")
   private Integer price;
+
+  @Schema(description = "產品庫存", example = "999")
+  private Integer stock;
+
+  @Schema(description = "產品狀態", example = "0")
+  private Integer states;
 
   @Schema(description = "產品圖片 Base64 字串", example = "iVBORw0KGgoAAAANSUhEUgAA...")
   private String imageBase64;

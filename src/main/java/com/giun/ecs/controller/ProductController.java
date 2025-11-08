@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.giun.ecs.dto.request.ProductUploadRequest;
 import com.giun.ecs.dto.response.Outbound;
 import com.giun.ecs.entity.Product;
 import com.giun.ecs.service.ProductService;
+
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
@@ -38,13 +40,24 @@ public class ProductController {
   }
 
   /**
-   * 取得所有產品資料
+   * 取得所有可購買產品資料
    * 
    * @return
    */
   @GetMapping("/products")
   public ResponseEntity<Outbound> getProducts() {
     Outbound response = productService.getAllProducts();
+    return ResponseEntity.ok(response);
+  }
+
+  /**
+   * 取得所有產品管理資料
+   * 
+   * @return
+   */
+  @GetMapping("/productManage")
+  public ResponseEntity<Outbound> productManage() {
+    Outbound response = productService.getProductsManage();
     return ResponseEntity.ok(response);
   }
 
