@@ -12,6 +12,7 @@ import com.giun.ecs.dto.response.Outbound;
 import com.giun.ecs.dto.response.ProductListResp;
 import com.giun.ecs.dto.response.ProductResponse;
 import com.giun.ecs.entity.Product;
+import com.giun.ecs.enums.ProductStutes;
 import com.giun.ecs.repository.ProductRepository;
 
 @Service
@@ -155,7 +156,7 @@ public class ProductService {
           .stock(product.getStock())
           .category(product.getCategory())
           .imageBase64(generateImageBase64(product.getImageData(), product.getImageType()))
-          .states(product.getStates())
+          .states(ProductStutes.getDesc(product.getStates()))
           .build();
     }).collect(Collectors.toList());
     return Outbound.ok(products);
