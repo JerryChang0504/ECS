@@ -3,8 +3,11 @@ package com.giun.ecs.service;
 import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
 import com.giun.ecs.dto.request.ProductUploadRequest;
 import com.giun.ecs.dto.response.Outbound;
 import com.giun.ecs.dto.response.ProductResponse;
@@ -144,5 +147,9 @@ public class ProductService {
     productRepository.save(updateProduct);
 
     return Outbound.ok("Product updated successfully");
+  }
+
+  public ResponseEntity<Outbound> getManageList() {
+    productRepository.findAll();
   }
 }

@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.giun.ecs.dto.request.ProductUploadRequest;
 import com.giun.ecs.dto.response.Outbound;
 import com.giun.ecs.entity.Product;
 import com.giun.ecs.service.ProductService;
+
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
@@ -73,4 +75,11 @@ public class ProductController {
     Outbound response = productService.updateProduct(id, req);
     return ResponseEntity.ok(response);
   }
+
+  @GetMapping("/products/manage")
+  public ResponseEntity<Outbound> getManageList() {
+    Outbound response = productService.getManageList();
+    return ResponseEntity.ok(response);
+  }
+
 }
