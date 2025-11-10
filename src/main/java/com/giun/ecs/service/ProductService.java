@@ -145,4 +145,26 @@ public class ProductService {
 
     return Outbound.ok("Product updated successfully");
   }
+
+  public Outbound getProductManage() {
+    List<ProductResponse> result = productRepository.findAll().stream().map(product -> {
+      String imageBase64 = null;
+      // 避免不必要的編碼操作
+      if (product.getImageData() != null && product.getImageType() != null) {
+        String base64 = Base64.getEncoder().encodeToString(product.getImageData());
+        imageBase64 = "data:" + product.getImageType() + ";base64," + base64;
+      }
+
+      return new ProductResponse(
+          product.getId(),
+          product.getName(),
+          product.getDescription(),
+          product.getPrice(),
+          product.getCategory(),
+          null, // TODO: 根據實際資料庫欄位填入 product.getRating()
+          imageBase64);
+    }).collect(Collectors.toList());
+
+    return Outbound.ok(result);
+  }
 }
