@@ -3,8 +3,10 @@ package com.giun.ecs.service;
 import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.giun.ecs.dto.request.ProductUploadRequest;
 import com.giun.ecs.dto.response.Outbound;
 import com.giun.ecs.dto.response.ProductResponse;
@@ -147,24 +149,73 @@ public class ProductService {
   }
 
   public Outbound getProductManage() {
-    List<ProductResponse> result = productRepository.findAll().stream().map(product -> {
-      String imageBase64 = null;
-      // 避免不必要的編碼操作
-      if (product.getImageData() != null && product.getImageType() != null) {
-        String base64 = Base64.getEncoder().encodeToString(product.getImageData());
-        imageBase64 = "data:" + product.getImageType() + ";base64," + base64;
-      }
+    List<ProductResponse> products = productRepository.findAll().stream().map(product -> {
 
-      return new ProductResponse(
-          product.getId(),
-          product.getName(),
-          product.getDescription(),
-          product.getPrice(),
-          product.getCategory(),
-          null, // TODO: 根據實際資料庫欄位填入 product.getRating()
-          imageBase64);
+      return ProductResponse.builder()
+          .id(product.getId())
+          .name(product.getName())
+          .description(product.getDescription())
+          .price(product.getPrice())
+          .category(product.getCategory())
+          .imageBase64(generateImageBase64(product.getImageData(), product.getImageType()))
+          .build();
     }).collect(Collectors.toList());
+    return Outbound.ok(products);
+  }
 
-    return Outbound.ok(result);
+  /**
+   * 用來傳遞圖片處理結果的 record。 Record 是 Java 14+ 的特性，適合用來傳遞不可變的資料物件。
+   */
+  private record ImageInfo(byte[] imageData, String imageType) {
+  }
+
+  /**
+   * 處理 Base64 圖片字串，解析出圖片二進制資料和類型。
+   * 
+   * @param base64String      Base64 編碼的圖片字串，可包含 Data URI 前綴。
+   * @param existingImageType 已知或預設的圖片類型。
+   * @return 包含圖片資料和類型的 ImageInfo 物件。
+   */
+  private ImageInfo processBase64Image(String base64String, String existingImageType) {
+    if (base64String == null || base64String.isBlank()) {
+      return new ImageInfo(null, null); // 沒有圖片，返回空值
+    }
+
+    String imageType = existingImageType;
+    String base64Content = base64String;
+
+    // 移除 Data URI scheme 前綴並嘗試解析圖片類型
+    if (base64String.startsWith("data:")) {
+      int commaIndex = base64String.indexOf(',');
+      if (commaIndex != -1) {
+        String dataUri = base64String.substring(0, commaIndex);
+        if (dataUri.contains(";base64")) {
+          imageType = dataUri.substring(dataUri.indexOf(':') + 1,
+              dataUri.indexOf(';'));
+        }
+        base64Content = base64String.substring(commaIndex + 1);
+      }
+    }
+
+    try {
+      byte[] imageBytes = Base64.getDecoder().decode(base64Content);
+      return new ImageInfo(imageBytes, imageType);
+    } catch (IllegalArgumentException e) {
+      throw new RuntimeException("無效的 Base64 圖片格式", e);
+    }
+  }
+
+  /**
+   * 產生圖片 Base64 字串
+   * 
+   * @param imageData 圖片資料
+   * @param imageType 圖片類型
+   * @return
+   */
+  private String generateImageBase64(byte[] imageData, String imageType) {
+    return imageData != null && imageType != null
+        ? "data:" + imageType + ";base64,"
+            + Base64.getEncoder().encodeToString(imageData)
+        : null;
   }
 }
