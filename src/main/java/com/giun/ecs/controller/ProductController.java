@@ -77,8 +77,8 @@ public class ProductController {
   }
 
   @GetMapping("/products/manage")
-  public ResponseEntity<Outbound> getManageList() {
-    Outbound response = productService.getManageList();
+  public ResponseEntity<Outbound> getProductsManage() {
+    Outbound response = productService.getProductsManage();
     return ResponseEntity.ok(response);
   }
 
