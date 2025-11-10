@@ -82,4 +82,10 @@ public class ProductController {
     return ResponseEntity.ok(response);
   }
 
+  @PutMapping("/deleteProducts/{id}")
+  public ResponseEntity<Outbound> deleteProduct(@PathVariable("id") Integer id) throws Exception {
+    Outbound response = productService.deleteProduct(id);
+    return ResponseEntity.ok(response);
+  }
+
 }
