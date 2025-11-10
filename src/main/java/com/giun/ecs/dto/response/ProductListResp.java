@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Schema(description = "產品資訊")
-public class ProductResponse {
+public class ProductListResp {
   @Schema(description = "產品ID")
   private Integer id;
 
@@ -24,9 +24,6 @@ public class ProductResponse {
   @Schema(description = "產品價格")
   private Integer price;
 
-  @Schema(description = "產品庫存")
-  private Integer stock;
-
   @Schema(description = "產品類別")
   private String category;
 
@@ -36,6 +33,4 @@ public class ProductResponse {
   @Schema(description = "產品圖片 Base64 字串")
   private String imageBase64; // e.g., "data:image/jpeg;base64,..."
 
-  @Schema(description = "產品狀態")
-  private String states;
 }
