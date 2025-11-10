@@ -176,6 +176,29 @@ public class ProductService {
   }
 
   /**
+   * 刪除商品
+   */
+
+  public Outbound deleteProduct(Integer id) {
+    productRepository.updateProductStates(id, ProductStutes.DELETE.getCode());
+    Product product = productRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Product not found after update"));
+
+    ProductResponse response = ProductResponse.builder()
+        .id(product.getId())
+        .name(product.getName())
+        .price(product.getPrice())
+        .stock(product.getStock())
+        .description(product.getDescription())
+        .category(product.getCategory())
+        .imageBase64(generateImageBase64(product.getImageData(), product.getImageType()))
+        .states(ProductStutes.getDesc(product.getStates()))
+        .build();
+
+    return Outbound.ok(response);
+  }
+
+  /**
    * 用來傳遞圖片處理結果的 record。 Record 是 Java 14+ 的特性，適合用來傳遞不可變的資料物件。
    */
   private record ImageInfo(byte[] imageData, String imageType) {
@@ -230,4 +253,5 @@ public class ProductService {
             + Base64.getEncoder().encodeToString(imageData)
         : null;
   }
+
 }
