@@ -23,7 +23,7 @@ public class ProductUploadRequest {
   private Integer stock;
 
   @Schema(description = "產品狀態", example = "0")
-  private Integer states;
+  private String states;
 
   @Schema(description = "產品圖片 Base64 字串", example = "iVBORw0KGgoAAAANSUhEUgAA...")
   private String imageBase64;

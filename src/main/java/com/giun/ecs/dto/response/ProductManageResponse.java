@@ -29,7 +29,7 @@ public class ProductManageResponse {
     private Integer stock;
 
     @Schema(description = "產品狀態")
-    private Integer states;
+    private String states;
 
     @Schema(description = "產品類別")
     private String category;

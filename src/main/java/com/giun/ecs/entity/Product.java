@@ -62,7 +62,7 @@ public class Product extends BaseEntity {
    * 
    */
   @Column(name = "states", nullable = false)
-  private Integer states;
+  private String states;
 
   /**
    * 圖片資料
