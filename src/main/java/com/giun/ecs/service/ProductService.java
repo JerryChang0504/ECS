@@ -12,7 +12,6 @@ import com.giun.ecs.dto.response.Outbound;
 import com.giun.ecs.dto.response.ProductListResp;
 import com.giun.ecs.dto.response.ProductResponse;
 import com.giun.ecs.entity.Product;
-import com.giun.ecs.enums.ProductStatus;
 import com.giun.ecs.repository.ProductRepository;
 
 @Service
@@ -156,29 +155,10 @@ public class ProductService {
           .stock(product.getStock())
           .category(product.getCategory())
           .imageBase64(generateImageBase64(product.getImageData(), product.getImageType()))
-          .states(ProductStatus.getDesc(product.getStates()))
+          .states(product.getStates())
           .build();
     }).collect(Collectors.toList());
     return Outbound.ok(products);
-  }
-
-  public Outbound deleteProduct(Integer id) {
-    productRepository.updateProductStates(id, ProductStatus.DELETE.getCode());
-    Product product = productRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Product not found after update"));
-
-    ProductResponse response = ProductResponse.builder()
-        .id(product.getId())
-        .name(product.getName())
-        .price(product.getPrice())
-        .stock(product.getStock())
-        .description(product.getDescription())
-        .category(product.getCategory())
-        .imageBase64(generateImageBase64(product.getImageData(), product.getImageType()))
-        .states(ProductStatus.getDesc(product.getStates()))
-        .build();
-
-    return Outbound.ok(response);
   }
 
   /**
