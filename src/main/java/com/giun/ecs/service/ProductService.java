@@ -57,7 +57,9 @@ public class ProductService {
   }
 
   public Outbound getAllProducts() {
-    List<ProductListResp> result = productRepository.findAll().stream().map(product -> {
+    List<ProductListResp> result = productRepository.findAll().stream()
+    .filter(product -> product.getStates().equals(ProductStutes.ONSALE.getCode()))
+    .map(product -> {
 
       return ProductListResp.builder()
           .id(product.getId())
@@ -86,8 +88,8 @@ public class ProductService {
         .price(req.getPrice())
         .stock(req.getStock())
         .imageData(imageInfo.imageData())
-        .imageType(imageInfo.imageType)
-        .states(product.getStates())
+        .imageType(imageInfo.imageType())
+        .states(req.getStates())
         .build();
 
     productRepository.save(updateProduct);
