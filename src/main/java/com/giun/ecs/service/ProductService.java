@@ -22,17 +22,42 @@ public class ProductService {
   private ProductRepository productRepository;
 
   public Product saveProduct(ProductUploadRequest req) {
-    ImageInfo imageInfo = processBase64Image(req.getImageBase64(), req.getImageType());
+    byte[] imageBytes = null;
+    String imageType = req.getImageType();
+
+    // 檢查是否有 Base64 圖片資料
+    if (req.getImageBase64() != null && !req.getImageBase64().isBlank()) {
+      String base64 = req.getImageBase64();
+
+      // 移除 Data URI scheme 前綴
+      if (base64.contains(",")) {
+        // 同時嘗試解析圖片類型
+        if (imageType == null && base64.startsWith("data:")) {
+          int start = base64.indexOf(":") + 1;
+          int end = base64.indexOf(";");
+          if (start > 0 && end > start) {
+            imageType = base64.substring(start, end);
+          }
+        }
+        base64 = base64.substring(base64.indexOf(",") + 1);
+      }
+
+      // 錯誤處理：如果 Base64 格式不正確，捕捉例外
+      try {
+        imageBytes = Base64.getDecoder().decode(base64);
+      } catch (IllegalArgumentException e) {
+        // 紀錄錯誤或拋出自訂例外，這裡以拋出 RuntimeException 為例
+        throw new RuntimeException("無效的 Base64 圖片格式", e);
+      }
+    }
 
     Product product = Product.builder()
         .name(req.getName())
         .category(req.getCategory())
         .description(req.getDescription())
         .price(req.getPrice())
-        .stock(req.getStock())
-        .imageData(imageInfo.imageData)
-        .imageType(imageInfo.imageType)
-        .states(ProductStutes.ONSALE.getCode())
+        .imageData(imageBytes)
+        .imageType(imageType)
         .build();
 
     return productRepository.save(product);
@@ -48,7 +73,10 @@ public class ProductService {
         .price(product.getPrice())
         .category(product.getCategory())
         .rating(null) // TODO: 根據實際資料庫欄位填入 product.getRating()
-        .imageBase64(generateImageBase64(product.getImageData(), product.getImageType()))
+        .imageBase64(product.getImageData() != null && product.getImageType() != null
+            ? "data:" + product.getImageType() + ";base64,"
+                + Base64.getEncoder().encodeToString(product.getImageData())
+            : null)
         .build();
 
     return Outbound.ok(response);
@@ -74,7 +102,33 @@ public class ProductService {
   public Outbound updateProduct(Integer id, ProductUploadRequest req) {
     Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
 
-    ImageInfo imageInfo = processBase64Image(req.getImageBase64(), req.getImageType());
+    byte[] imageBytes = null;
+    String imageType = req.getImageType();
+    // 檢查是否有 Base64 圖片資料
+    if (req.getImageBase64() != null && !req.getImageBase64().isBlank()) {
+      String base64 = req.getImageBase64();
+
+      // 移除 Data URI scheme 前綴
+      if (base64.contains(",")) {
+        // 同時嘗試解析圖片類型
+        if (imageType == null && base64.startsWith("data:")) {
+          int start = base64.indexOf(":") + 1;
+          int end = base64.indexOf(";");
+          if (start > 0 && end > start) {
+            imageType = base64.substring(start, end);
+          }
+        }
+        base64 = base64.substring(base64.indexOf(",") + 1);
+      }
+
+      // 錯誤處理：如果 Base64 格式不正確，捕捉例外
+      try {
+        imageBytes = Base64.getDecoder().decode(base64);
+      } catch (IllegalArgumentException e) {
+        // 紀錄錯誤或拋出自訂例外，這裡以拋出 RuntimeException 為例
+        throw new RuntimeException("無效的 Base64 圖片格式", e);
+      }
+    }
 
     Product updateProduct = Product.builder()
         .id(product.getId())
@@ -82,8 +136,8 @@ public class ProductService {
         .category(req.getCategory())
         .description(req.getDescription())
         .price(req.getPrice())
-        .imageData(imageInfo.imageData())
-        .imageType(imageInfo.imageType)
+        .imageData(imageBytes)
+        .imageType(imageType)
         .build();
 
     productRepository.save(updateProduct);
