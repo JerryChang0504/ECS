@@ -71,7 +71,7 @@ public class ProductController {
    */
   @PutMapping("/updateProducts/{id}")
   public ResponseEntity<Outbound> updateProduct(@PathVariable("id") Integer id,
-      @RequestBody ProductUploadRequest req) {
+      @RequestBody ProductUploadRequest req) throws Exception {
     Outbound response = productService.updateProduct(id, req);
     return ResponseEntity.ok(response);
   }

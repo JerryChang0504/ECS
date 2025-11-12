@@ -30,8 +30,8 @@ public class ProductService {
         .description(req.getDescription())
         .price(req.getPrice())
         .stock(req.getStock())
-        .imageData(imageInfo.imageData)
-        .imageType(imageInfo.imageType)
+        .imageData(imageInfo.imageData())
+        .imageType(imageInfo.imageType())
         .states(ProductStutes.ONSALE.getCode())
         .build();
 
@@ -57,18 +57,20 @@ public class ProductService {
   }
 
   public Outbound getAllProducts() {
-    List<ProductListResp> result = productRepository.findAll().stream().map(product -> {
+    List<ProductListResp> result = productRepository.findAll().stream()
+        .filter(product -> product.getStates().equals(ProductStutes.ONSALE.getCode()))
+        .map(product -> {
 
-      return ProductListResp.builder()
-          .id(product.getId())
-          .name(product.getName())
-          .description(product.getDescription())
-          .price(product.getPrice())
-          .category(product.getCategory())
-          .rating(null) // TODO: 根據實際資料庫欄位填入 product.getRating()
-          .imageBase64(generateImageBase64(product.getImageData(), product.getImageType()))
-          .build();
-    }).collect(Collectors.toList());
+          return ProductListResp.builder()
+              .id(product.getId())
+              .name(product.getName())
+              .description(product.getDescription())
+              .price(product.getPrice())
+              .category(product.getCategory())
+              .rating(null) // TODO: 根據實際資料庫欄位填入 product.getRating()
+              .imageBase64(generateImageBase64(product.getImageData(), product.getImageType()))
+              .build();
+        }).collect(Collectors.toList());
 
     return Outbound.ok(result);
   }
@@ -85,9 +87,9 @@ public class ProductService {
         .description(req.getDescription())
         .price(req.getPrice())
         .stock(req.getStock())
-        .imageData(imageInfo.imageData)
-        .imageType(imageInfo.imageType)
-        .states(product.getStates())
+        .imageData(imageInfo.imageData())
+        .imageType(imageInfo.imageType())
+        .states(req.getStates())
         .build();
 
     productRepository.save(updateProduct);
