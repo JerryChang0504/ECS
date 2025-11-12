@@ -59,7 +59,8 @@ public class ProductService {
         .price(req.getPrice())
         .stock(req.getStock())
         .imageData(imageInfo.imageData())
-        .imageType(imageInfo.imageType)
+        .imageType(imageInfo.imageType())
+        .states(ProductStutes.ONSALE.getCode())
         .build();
 
     return productRepository.save(product);
@@ -73,6 +74,8 @@ public class ProductService {
         .name(product.getName())
         .description(product.getDescription())
         .price(product.getPrice())
+        .stock(product.getStock())
+        .states(product.getStates())
         .category(product.getCategory())
         .rating(null) // TODO: 根據實際資料庫欄位填入 product.getRating()
         .imageBase64(product.getImageData() != null && product.getImageType() != null
@@ -151,8 +154,10 @@ public class ProductService {
         .category(req.getCategory())
         .description(req.getDescription())
         .price(req.getPrice())
+        .stock(req.getStock())
         .imageData(imageBytes)
         .imageType(imageType)
+        .states(req.getStates())
         .build();
 
     productRepository.save(updateProduct);
