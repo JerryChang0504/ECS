@@ -88,31 +88,33 @@ public class ProductService {
   }
 
   public Outbound getAllProducts() {
-    List<ListResponse> result = productRepository.findAll().stream().map(product -> {
-      String imageBase64 = null;
-      // 避免不必要的編碼操作
-      if (product.getImageData() != null && product.getImageType() != null) {
-        String base64 = Base64.getEncoder().encodeToString(product.getImageData());
-        imageBase64 = "data:" + product.getImageType() + ";base64," + base64;
-      }
-      return ListResponse.builder()
-          .id(product.getId())
-          .name(product.getName())
-          .description(product.getDescription())
-          .price(product.getPrice())
-          .category(product.getCategory())
-          .rating(null) // TODO: 根據實際資料庫欄位填入 product.getRating()
-          .imageBase64(generateImageBase64(product.getImageData(), product.getImageType()))
-          .build();
-      // return new ListResponse(
-      // product.getId(),
-      // product.getName(),
-      // product.getDescription(),
-      // product.getPrice(),
-      // product.getCategory(),
-      // null, // TODO: 根據實際資料庫欄位填入 product.getRating()
-      // imageBase64);
-    }).collect(Collectors.toList());
+    List<ListResponse> result = productRepository.findAll().stream()
+        .filter(product -> product.getStates() == ProductStutes.ONSALE.getCode())
+        .map(product -> {
+          String imageBase64 = null;
+          // 避免不必要的編碼操作
+          if (product.getImageData() != null && product.getImageType() != null) {
+            String base64 = Base64.getEncoder().encodeToString(product.getImageData());
+            imageBase64 = "data:" + product.getImageType() + ";base64," + base64;
+          }
+          return ListResponse.builder()
+              .id(product.getId())
+              .name(product.getName())
+              .description(product.getDescription())
+              .price(product.getPrice())
+              .category(product.getCategory())
+              .rating(null) // TODO: 根據實際資料庫欄位填入 product.getRating()
+              .imageBase64(generateImageBase64(product.getImageData(), product.getImageType()))
+              .build();
+          // return new ListResponse(
+          // product.getId(),
+          // product.getName(),
+          // product.getDescription(),
+          // product.getPrice(),
+          // product.getCategory(),
+          // null, // TODO: 根據實際資料庫欄位填入 product.getRating()
+          // imageBase64);
+        }).collect(Collectors.toList());
 
     return Outbound.ok(result);
   }
