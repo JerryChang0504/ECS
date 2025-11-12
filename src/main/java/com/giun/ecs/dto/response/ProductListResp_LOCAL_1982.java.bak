@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Schema(description = "產品資訊")
 public class ProductListResp {
-<<<<<<< HEAD
     @Schema(description = "產品ID")
     private Integer id;
 
