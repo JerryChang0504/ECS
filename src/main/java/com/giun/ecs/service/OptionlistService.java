@@ -14,6 +14,9 @@ public class OptionlistService {
     @Autowired
     OptionslistRepository optionlistrepository;
 
+    /**
+     * 選項查詢
+     */
     public Outbound getOptions() {
         List<OptionsList> optionlist = optionlistrepository.findAll();
         return Outbound.ok(optionlist);
