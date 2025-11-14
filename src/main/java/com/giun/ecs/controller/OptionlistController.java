@@ -17,7 +17,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RestController
 @RequestMapping("/options")
 @Tag(name = "options", description = "選項管理API")
-public class OptionlistController {
+public class OptionlistController extends BaseController {
 
     @Autowired
     private OptionlistService optionlistService;
@@ -36,6 +36,7 @@ public class OptionlistController {
      */
     @PostMapping("/add")
     public ResponseEntity<Outbound> addOptions(@RequestBody AddOptionReq req) throws Exception {
+        checkRequired(req.getListName(), req.getName(), req.getValue());
         Outbound response = optionlistService.addOptions(req);
         return ResponseEntity.ok(response);
     }
