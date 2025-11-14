@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Table(name = "Optionslist")
-public class OptionsList {
+public class OptionsList extends BaseEntity {
     /**
      * id
      */
