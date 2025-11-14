@@ -1,6 +1,7 @@
 package com.giun.ecs.dto.response;
 
 import com.giun.ecs.enums.ResultCode;
+
 import lombok.Builder;
 import lombok.Data;
 
@@ -19,6 +20,14 @@ public class Outbound {
         .build();
     return outbound;
   }
+
+  // public static Outbound ok() {
+  // Outbound outbound = Outbound.builder()
+  // .code(ResultCode.SUCCESS.getCode())
+  // .msg(ResultCode.SUCCESS.getMsg())
+  // .build();
+  // return outbound;
+  // }
 
   public static Outbound error(ResultCode resultCode, Object result) {
     Outbound outbound = Outbound.builder()

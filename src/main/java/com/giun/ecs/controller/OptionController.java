@@ -3,9 +3,12 @@ package com.giun.ecs.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.giun.ecs.dto.request.OptionsRequest;
 import com.giun.ecs.dto.response.Outbound;
 import com.giun.ecs.service.OptionService;
 
@@ -26,4 +29,12 @@ public class OptionController {
         Outbound reponse = optionService.getOptions();
         return ResponseEntity.ok(reponse);
     }
+
+    @PostMapping("/add")
+    public ResponseEntity<Outbound> addOption(@RequestBody OptionsRequest req) {
+        Outbound response = optionService.addOption(req);
+
+        return ResponseEntity.ok(response);
+    }
+
 }
