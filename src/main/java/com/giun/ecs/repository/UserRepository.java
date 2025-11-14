@@ -3,9 +3,11 @@ package com.giun.ecs.repository;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import com.giun.ecs.entity.UserInfo;
 
+@Repository
 public interface UserRepository extends JpaRepository<UserInfo, Long> {
 	// 根據 username 查找使用者（用於登入）
 	Optional<UserInfo> findByUsername(String username);
