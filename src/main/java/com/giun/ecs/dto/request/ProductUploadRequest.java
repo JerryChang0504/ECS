@@ -27,4 +27,7 @@ public class ProductUploadRequest {
 
   @Schema(description = "產品圖片格式", example = "image/png")
   private String imageType;
+
+  @Schema(description = "產品狀態", example = "2")
+  private String states;
 }
