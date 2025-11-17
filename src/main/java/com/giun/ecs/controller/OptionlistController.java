@@ -1,6 +1,7 @@
 package com.giun.ecs.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -57,4 +58,28 @@ public class OptionlistController extends BaseController {
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * 關閉選項
+     * 
+     * @throws Exception
+     */
+    @PutMapping("disable/{id}")
+    public ResponseEntity<Outbound> deleteOptions(@PathVariable Integer id) throws Exception {
+        Outbound response = optionlistService.deleteOptions(id);
+        return ResponseEntity.ok(response);
+    }
+
+    /**
+     * 取得選項
+     * 
+     * @param listName
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/getByListName")
+    public ResponseEntity<Outbound> getOptionsByListName(@Param("listName") String listName)
+            throws Exception {
+        Outbound resp = optionlistService.getOptionsByListName(listName);
+        return ResponseEntity.ok(resp);
+    }
 }
