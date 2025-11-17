@@ -60,4 +60,29 @@ public class OptionService {
         optionRepository.save(option);
         return Outbound.ok();
     }
+
+    /**
+     * 關閉選項
+     * 
+     * @throws Exception
+     */
+    public Outbound deleteOptions(Integer id) throws Exception {
+        OptionList option = optionRepository.findById(id).orElseThrow(() -> new Exception("選項不存在"));
+        option.setIsActive(false);
+        optionRepository.save(option);
+        return Outbound.ok();
+    }
+
+    /**
+     * 取得選項
+     * 
+     * @param listName
+     * @return
+     * @throws Exception
+     */
+    public Outbound getOptionsByListName(String listName) throws Exception {
+        List<OptionList> optionlist = optionRepository.findByListNameAsc(listName);
+        return Outbound.ok(optionlist);
+    }
+
 }
