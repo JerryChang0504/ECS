@@ -23,7 +23,7 @@ public class OptionService {
      */
     public Outbound getOptions() {
         List<OptionList> optionlist = optionRepository.findAll();
-        return Outbound.ok();
+        return Outbound.ok(optionlist);
     }
 
     /**
