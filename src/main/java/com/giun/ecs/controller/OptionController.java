@@ -3,11 +3,14 @@ package com.giun.ecs.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.giun.ecs.dto.request.EditOptionRequest;
 import com.giun.ecs.dto.request.OptionsRequest;
 import com.giun.ecs.dto.response.Outbound;
 import com.giun.ecs.service.OptionService;
@@ -33,6 +36,17 @@ public class OptionController {
     @PostMapping("/add")
     public ResponseEntity<Outbound> addOption(@RequestBody OptionsRequest req) {
         Outbound response = optionService.addOption(req);
+
+        return ResponseEntity.ok(response);
+    }
+
+    /**
+     * 更新選項
+     */
+    @PutMapping("edit/{id}")
+    public ResponseEntity<Outbound> editOption(@PathVariable Integer id, @RequestBody EditOptionRequest req)
+            throws Exception {
+        Outbound response = optionService.editOption(id, req);
 
         return ResponseEntity.ok(response);
     }

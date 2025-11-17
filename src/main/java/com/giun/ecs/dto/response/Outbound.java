@@ -21,6 +21,14 @@ public class Outbound {
     return outbound;
   }
 
+  public static Outbound ok() {
+    Outbound outbound = Outbound.builder()
+        .code(ResultCode.SUCCESS.getCode())
+        .msg(ResultCode.SUCCESS.getMsg())
+        .build();
+    return outbound;
+  }
+
   // public static Outbound ok() {
   // Outbound outbound = Outbound.builder()
   // .code(ResultCode.SUCCESS.getCode())

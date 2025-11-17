@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.giun.ecs.dto.request.EditOptionRequest;
 import com.giun.ecs.dto.request.OptionsRequest;
 import com.giun.ecs.dto.response.Outbound;
 import com.giun.ecs.entity.OptionList;
@@ -22,7 +23,7 @@ public class OptionService {
      */
     public Outbound getOptions() {
         List<OptionList> optionlist = optionRepository.findAll();
-        return Outbound.ok(optionlist);
+        return Outbound.ok();
     }
 
     /**
@@ -42,6 +43,21 @@ public class OptionService {
                 .description(req.getDescription())
                 .build();
         optionRepository.save(optionList);
-        return Outbound.ok(null);
+        return Outbound.ok();
+    }
+
+    /**
+     * 更新選項
+     */
+    public Outbound editOption(Integer id, EditOptionRequest req) throws Exception {
+        OptionList option = optionRepository.findById(id).orElseThrow(() -> new Exception("選項不存在"));
+        option.setListName(req.getListName());
+        option.setName(req.getName());
+        option.setValue(req.getValue());
+        option.setSortOrder(req.getSortOrder());
+        option.setIsActive(req.getIsActive());
+        option.setDescription(req.getDescription());
+        optionRepository.save(option);
+        return Outbound.ok();
     }
 }
