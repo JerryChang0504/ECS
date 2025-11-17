@@ -46,16 +46,20 @@ public class ProductService {
         .name(product.getName())
         .description(product.getDescription())
         .price(product.getPrice())
+        .stock(product.getStock())
         .category(product.getCategory())
         .rating(null) // TODO: 根據實際資料庫欄位填入 product.getRating()
         .imageBase64(generateImageBase64(product.getImageData(), product.getImageType()))
+        .states(ProductStutes.getDesc(product.getStates()))
         .build();
 
     return Outbound.ok(response);
   }
 
   public Outbound getAllProducts() {
-    List<ProductListResp> result = productRepository.findAll().stream().map(product -> {
+    List<ProductListResp> result = productRepository.findAll().stream()
+    .filter(product -> product.getStates().equals(ProductStutes.ONSALE.getCode()))
+    .map(product -> {
 
       return ProductListResp.builder()
           .id(product.getId())
@@ -82,8 +86,10 @@ public class ProductService {
         .category(req.getCategory())
         .description(req.getDescription())
         .price(req.getPrice())
+        .stock(req.getStock())
         .imageData(imageInfo.imageData())
-        .imageType(imageInfo.imageType)
+        .imageType(imageInfo.imageType())
+        .states(req.getStates())
         .build();
 
     productRepository.save(updateProduct);
