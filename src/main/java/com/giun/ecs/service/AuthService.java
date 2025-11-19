@@ -10,6 +10,7 @@ import com.giun.ecs.dto.request.ChangePswRequest;
 import com.giun.ecs.dto.request.LoginRequest;
 import com.giun.ecs.dto.request.RegisterRequest;
 import com.giun.ecs.dto.request.UpdateUserRequest;
+import com.giun.ecs.dto.response.LoginResp;
 import com.giun.ecs.dto.response.Outbound;
 import com.giun.ecs.dto.response.UserResponse;
 import com.giun.ecs.entity.UserInfo;
@@ -72,9 +73,12 @@ public class AuthService {
 				userInfo.getPassword())) {
 			throw new ApplicationException(ResultCode.PASSWORD_NOT_MATCH);
 		}
-		String token = jwtUtil.generateToken(userInfo);
+		LoginResp loginResp = LoginResp.builder()
+				.token(jwtUtil.generateToken(userInfo))
+				.role(userInfo.getRole())
+				.build();
 
-		return Outbound.ok(token);
+		return Outbound.ok(loginResp);
 	}
 
 	/**
