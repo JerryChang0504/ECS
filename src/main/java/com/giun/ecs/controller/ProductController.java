@@ -10,12 +10,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.giun.ecs.dto.request.ProductUploadRequest;
 import com.giun.ecs.dto.response.Outbound;
 import com.giun.ecs.entity.Product;
 import com.giun.ecs.service.ProductService;
-
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
@@ -33,6 +32,7 @@ public class ProductController {
    * @return
    */
   @PostMapping(path = "/addProducts", consumes = MediaType.APPLICATION_JSON_VALUE)
+  @Operation(summary = "新增產品", description = "新增產品資料")
   public ResponseEntity<Product> uploadProduct(
       @RequestBody ProductUploadRequest req) {
     Product saved = productService.saveProduct(req);
@@ -45,6 +45,7 @@ public class ProductController {
    * @return
    */
   @GetMapping("/products")
+  @Operation(summary = "取得所有產品資料", description = "取得所有產品資料列表")
   public ResponseEntity<Outbound> getProducts() {
     Outbound response = productService.getAllProducts();
     return ResponseEntity.ok(response);
@@ -57,6 +58,7 @@ public class ProductController {
    * @return
    */
   @GetMapping("/products/edit/{id}")
+  @Operation(summary = "取得產品資料", description = "根據商品ID取得產品資料")
   public ResponseEntity<Outbound> getProductById(@PathVariable("id") Integer id) {
     Outbound response = productService.getProductById(id);
     return ResponseEntity.ok(response);
@@ -65,11 +67,12 @@ public class ProductController {
   /**
    * 更新產品
    * 
-   * @param id  商品ID
+   * @param id 商品ID
    * @param req 更新資料
    * @return
    */
   @PutMapping("/updateProducts/{id}")
+  @Operation(summary = "更新產品", description = "根據商品ID更新產品資料")
   public ResponseEntity<Outbound> updateProduct(@PathVariable("id") Integer id,
       @RequestBody ProductUploadRequest req) {
     Outbound response = productService.updateProduct(id, req);
@@ -77,6 +80,7 @@ public class ProductController {
   }
 
   @GetMapping("/products/manage")
+  @Operation(summary = "取得產品管理資料", description = "取得產品管理所需的資料列表")
   public ResponseEntity<Outbound> getProductsMange() {
     Outbound response = productService.getProductsMange();
     return ResponseEntity.ok(response);
@@ -89,6 +93,7 @@ public class ProductController {
    * @return
    */
   @PutMapping("/deleteProducts/{id}")
+  @Operation(summary = "刪除產品", description = "根據商品ID刪除產品資料")
   public ResponseEntity<Outbound> deleteProduct(@PathVariable("id") Integer id) throws Exception {
     Outbound response = productService.deleteProduct(id);
     return ResponseEntity.ok(response);

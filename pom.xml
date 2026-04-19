@@ -30,7 +30,8 @@
 	<properties>
 		<java.version>17</java.version>
 		<spring.boot.version>3.2.4</spring.boot.version>
-		<springdoc.version>2.3.0</springdoc.version>
+		<!-- OpenAPI 3（Swagger UI）：與 Spring Boot 3.5.x 請使用 springdoc 2.8.x；3.x 系列對應 Spring Boot 4 -->
+		<springdoc.version>2.8.17</springdoc.version>
 	</properties>
 	<dependencies>
 

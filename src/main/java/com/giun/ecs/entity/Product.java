@@ -58,6 +58,13 @@ public class Product extends BaseEntity {
   private Integer stock;
 
   /**
+   * 商品狀態
+   * 
+   */
+  @Column(name = "states", nullable = false)
+  private String states;
+
+  /**
    * 圖片資料
    */
   @Lob
@@ -69,10 +76,4 @@ public class Product extends BaseEntity {
    */
   @Column(name = "image_type")
   private String imageType;
-
-  /**
-   * 商品狀態
-   */
-  @Column(name = "states", nullable = false)
-  private String states;
 }

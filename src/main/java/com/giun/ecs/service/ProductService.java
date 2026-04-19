@@ -39,7 +39,8 @@ public class ProductService {
   }
 
   public Outbound getProductById(Integer id) {
-    Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
+    Product product =
+        productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
 
     ProductResponse response = ProductResponse.builder()
         .id(product.getId())
@@ -72,7 +73,8 @@ public class ProductService {
   }
 
   public Outbound updateProduct(Integer id, ProductUploadRequest req) {
-    Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
+    Product product =
+        productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
 
     ImageInfo imageInfo = processBase64Image(req.getImageBase64(), req.getImageType());
 
@@ -139,7 +141,7 @@ public class ProductService {
   /**
    * 處理 Base64 圖片字串，解析出圖片二進制資料和類型。
    * 
-   * @param base64String      Base64 編碼的圖片字串，可包含 Data URI 前綴。
+   * @param base64String Base64 編碼的圖片字串，可包含 Data URI 前綴。
    * @param existingImageType 已知或預設的圖片類型。
    * @return 包含圖片資料和類型的 ImageInfo 物件。
    */

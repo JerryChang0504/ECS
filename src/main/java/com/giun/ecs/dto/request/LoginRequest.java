@@ -14,10 +14,10 @@ import lombok.NoArgsConstructor;
 @Schema(description = "登入請求")
 public class LoginRequest {
   @NotBlank
-  @Schema(description = "使用者帳號", example = "john_doe")
+  @Schema(description = "使用者帳號", example = "admin0419")
   private String username;
 
   @NotBlank
-  @Schema(description = "使用者密碼", example = "P@ssw0rd123")
+  @Schema(description = "使用者密碼", example = "admin0419")
   private String password;
 }
